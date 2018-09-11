@@ -1,5 +1,15 @@
 # Machine-Learning
 
+library(data.table)
+library(Matrix)
+library(xgboost)
+library(caret)
+library(dplyr)
+library(tidyverse)
+library(mlr)      
+library(knitr)
+library("lattice")
+
 
 ## Titanic
 
