@@ -23,33 +23,28 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: "poetry"
 
       - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 1.8.3
-          virtualenvs-create: false
-
-      - name: Ensure Poetry on PATH
-        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Install dependencies
         working-directory: Machine-Learning
-        run: $HOME/.local/bin/poetry install --with dev
+        run: poetry install --with dev
 
       - name: Run black
         working-directory: Machine-Learning
-        run: $HOME/.local/bin/poetry run black --check src tests
+        run: poetry run black --check src tests
 
       - name: Run ruff
         working-directory: Machine-Learning
-        run: $HOME/.local/bin/poetry run ruff check src tests
+        run: poetry run ruff check src tests
 
       - name: Run mypy
         working-directory: Machine-Learning
-        run: $HOME/.local/bin/poetry run mypy --strict src
+        run: poetry run mypy --strict src
 
       - name: Run pytest
         working-directory: Machine-Learning
-        run: $HOME/.local/bin/poetry run pytest --cov=src --cov-report=term-missing
+        run: poetry run pytest --cov=src --cov-report=term-missing
