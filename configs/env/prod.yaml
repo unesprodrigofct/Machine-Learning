@@ -1,0 +1,24 @@
+defaults:
+  - override base: data
+  - override base: training
+  - override base: inference
+
+data:
+  dataset:
+    source: ${env:PROD_DATA_SOURCE}
+    cache: /var/app/data/interim
+
+trainer:
+  experiment:
+    name: prod_regression
+  logging:
+    level: INFO
+
+service:
+  host: 0.0.0.0
+  port: ${env:PORT, 8080}
+  replicas: 3
+  autoscaling:
+    min_replicas: 3
+    max_replicas: 10
+    target_cpu_utilization: 70

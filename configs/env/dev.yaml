@@ -1,0 +1,19 @@
+defaults:
+  - override base: data
+  - override base: training
+  - override base: inference
+
+data:
+  dataset:
+    source: data/raw/xgboost_dataset.csv
+    cache: data/interim/
+
+trainer:
+  experiment:
+    name: dev_regression
+  logging:
+    level: DEBUG
+
+service:
+  host: 0.0.0.0
+  port: 8000

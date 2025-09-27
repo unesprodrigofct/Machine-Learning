@@ -1,0 +1,105 @@
+openapi: 3.1.0
+info:
+  title: Machine Learning Inference API
+  version: 1.0.0
+  description: |
+    FastAPI service exposing regression, XGBoost classification, and NLP clustering endpoints.
+servers:
+  - url: https://api.example.com
+    description: Production
+  - url: http://localhost:8000
+    description: Development
+paths:
+  /predict/regression:
+    post:
+      summary: Predict target using linear regression model.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegressionRequest'
+      responses:
+        '200':
+          description: Successful prediction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegressionResponse'
+  /predict/xgboost:
+    post:
+      summary: Predict probability using XGBoost classifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/XGBoostRequest'
+      responses:
+        '200':
+          description: Successful probability prediction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/XGBoostResponse'
+  /predict/text-clusters:
+    post:
+      summary: Assign clusters to input documents.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextClusteringRequest'
+      responses:
+        '200':
+          description: Clusters generated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextClusteringResponse'
+components:
+  schemas:
+    RegressionRequest:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            type: number
+          minItems: 10
+      required:
+        - features
+    RegressionResponse:
+      type: object
+      properties:
+        prediction:
+          type: number
+    XGBoostRequest:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            type: number
+          minItems: 3
+    XGBoostResponse:
+      type: object
+      properties:
+        probability:
+          type: number
+    TextClusteringRequest:
+      type: object
+      properties:
+        documents:
+          type: array
+          items:
+            type: string
+          minItems: 1
+    TextClusteringResponse:
+      type: object
+      properties:
+        clusters:
+          type: array
+          items:
+            type: integer

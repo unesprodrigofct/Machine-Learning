@@ -8,8 +8,8 @@ PROJECT_ROOT = CURRENT_DIR.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.models.base import ModelMetadata
-from src.models.regression import LinearRegressionTrainer, RegressionConfig
+from src.core.base import ModelMetadata
+from src.core.trainers import LinearRegressionTrainer, RegressionConfig
 
 
 def main() -> None:

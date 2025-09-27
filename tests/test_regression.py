@@ -1,7 +1,8 @@
 import pandas as pd
 from sklearn import datasets
 
-from src.models.regression import LinearRegressionTrainer, ModelMetadata, RegressionConfig
+from src.core.base import ModelMetadata
+from src.core.trainers import LinearRegressionTrainer, RegressionConfig
 
 
 def test_linear_regression_trainer_produces_metrics(tmp_path):

@@ -1,0 +1,17 @@
+dataset:
+  name: mock_tabular
+  version: 1
+  source: data/raw/xgboost_dataset.csv
+  validation_split: 0.2
+  feature_store:
+    enabled: false
+    registry: feast
+    project: ml_production
+
+feature_engineering:
+  numerical:
+    imputer: median
+    scaler: standard
+  categorical:
+    encoder: one_hot
+    handle_unknown: ignore

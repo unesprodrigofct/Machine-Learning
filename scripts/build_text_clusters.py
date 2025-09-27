@@ -2,25 +2,30 @@
 
 from pathlib import Path
 
+from src.core.pipelines import TextClusteringConfig, TextClusteringPipeline
 from src.data.loaders import load_text_corpus
-from src.models.nlp import TextClusteringConfig, TextClusteringPipeline
+from src.infra.logging import configure_logging, get_logger
+from src.infra.settings import get_settings
 
 
 def main() -> None:
-    corpus_path = Path("data/text_corpus.txt")
+    configure_logging()
+    logger = get_logger(__name__)
+    settings = get_settings()
+
+    corpus_path = Path(settings.text_corpus_path)
     documents = load_text_corpus(corpus_path)
 
     pipeline = TextClusteringPipeline(TextClusteringConfig(n_clusters=2))
     labels = pipeline.fit_predict(documents)
     terms = pipeline.top_terms_per_cluster(top_n=5)
 
-    print("Cluster assignments:")
+    logger.info("clusters.built", documents=len(documents))
     for doc, label in zip(documents, labels):
-        print(f"- [{label}] {doc[:80]}")
+        logger.info("clusters.assignment", label=int(label), document_preview=doc[:80])
 
-    print("\nTop terms per cluster:")
     for idx, cluster_terms in enumerate(terms):
-        print(f"Cluster {idx}: {', '.join(cluster_terms)}")
+        logger.info("clusters.top_terms", cluster=idx, terms=cluster_terms)
 
 
 if __name__ == "__main__":
