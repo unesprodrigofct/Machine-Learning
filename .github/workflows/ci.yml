@@ -11,9 +11,6 @@ on:
       - main
       - master
 
-env:
-  POETRY_VERSION: 1.8.3
-
 jobs:
   quality-gates:
     runs-on: ubuntu-latest
@@ -29,7 +26,10 @@ jobs:
           cache: "poetry"
 
       - name: Install Poetry
-        run: pip install "poetry==${{ env.POETRY_VERSION }}"
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.8.3
+          virtualenvs-create: false
 
       - name: Install dependencies
         working-directory: Machine-Learning
