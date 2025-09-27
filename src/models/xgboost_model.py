@@ -10,6 +10,7 @@ import joblib
 import numpy as np
 import pandas as pd
 import xgboost as xgb
+from scipy.stats import ks_2samp
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import GridSearchCV, StratifiedKFold, train_test_split
 
@@ -23,6 +24,7 @@ class XGBoostConfig:
     test_size: float = 0.3
     random_state: int = 1337
     params_grid: Optional[Dict[str, Any]] = None
+    cv_splits: int = 5
 
 
 class XGBoostTrainer(PersistableModel):
@@ -39,7 +41,7 @@ class XGBoostTrainer(PersistableModel):
             raise ValueError(f"Target column '{target_column}' not present in dataset")
         return dataset
 
-    def train(self, dataset: pd.DataFrame, target_column: str) -> float:
+    def train(self, dataset: pd.DataFrame, target_column: str) -> tuple[float, float]:
         X = dataset.drop(columns=[target_column])
         y = dataset[target_column]
 
@@ -60,11 +62,16 @@ class XGBoostTrainer(PersistableModel):
             "n_estimators": [100],
         }
 
+        min_class_count = y_train.value_counts().min()
+        n_splits = min(self.config.cv_splits, int(min_class_count))
+        if n_splits < 2:
+            raise ValueError("Not enough samples per class to perform stratified K-fold cross-validation.")
+
         grid_search = GridSearchCV(
             self.model,
             param_grid=search_space,
             scoring="roc_auc",
-            cv=StratifiedKFold(n_splits=5, shuffle=True, random_state=self.config.random_state),
+            cv=StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=self.config.random_state),
             n_jobs=-1,
         )
 
@@ -73,7 +80,12 @@ class XGBoostTrainer(PersistableModel):
 
         probs = self.model.predict_proba(X_test)[:, 1]
         auc = roc_auc_score(y_test, probs)
-        return auc
+
+        positives = probs[y_test == 1]
+        negatives = probs[y_test == 0]
+        ks_statistic = ks_2samp(positives, negatives).statistic
+
+        return auc, ks_statistic
 
     def export(self) -> Path:
         return self.save(self.model)
