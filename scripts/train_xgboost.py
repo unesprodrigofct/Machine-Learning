@@ -9,8 +9,8 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.data.loaders import CSVLoaderConfig, load_csv_dataset, load_titanic_for_xgboost
-from src.models.base import ModelMetadata
-from src.models.xgboost_model import XGBoostConfig, XGBoostTrainer
+from src.core.base import ModelMetadata
+from src.core.trainers import XGBoostConfig, XGBoostTrainer
 
 
 def main() -> None:

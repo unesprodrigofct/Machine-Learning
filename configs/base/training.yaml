@@ -1,0 +1,17 @@
+experiment:
+  name: baseline_regression
+  tags:
+    - regression
+    - baseline
+  tracking_uri: ${env:MLFLOW_TRACKING_URI, "http://localhost:5000"}
+
+trainer:
+  algorithm: linear_regression
+  random_state: 42
+  cross_validation:
+    folds: 5
+    shuffle: true
+
+metrics:
+  - mean_squared_error
+  - r2_score

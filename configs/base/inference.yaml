@@ -1,0 +1,15 @@
+service:
+  model_name: baseline_regression
+  version: "1.0.0"
+  artifact_path: artifacts/linear_regression.pkl
+  batch_size: 32
+
+thresholds:
+  xgboost_probability:
+    warning: 0.6
+    critical: 0.8
+
+monitoring:
+  enabled: true
+  provider: prometheus
+  metric_namespace: ml_api

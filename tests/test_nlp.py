@@ -1,6 +1,6 @@
 import pytest
 
-from src.models.nlp import TextClusteringConfig, TextClusteringPipeline
+from src.core.pipelines import TextClusteringConfig, TextClusteringPipeline
 
 
 @pytest.fixture

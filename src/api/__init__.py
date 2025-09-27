@@ -1,1 +1,5 @@
-"""API package for serving machine learning models."""
+"""API package exports."""
+
+from .app import app
+
+__all__ = ["app"]

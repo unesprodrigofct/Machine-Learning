@@ -1,0 +1,14 @@
+apiVersion: v2
+name: ml-api
+version: 0.1.0
+appVersion: "1.0.0"
+description: Helm chart for deploying the Machine Learning inference API
+keywords:
+  - machine-learning
+  - fastapi
+  - inference
+sources:
+  - https://github.com/unesprodrigofct/machine-learning
+maintainers:
+  - name: Rodrigo Silva
+    email: contact@domain.com
