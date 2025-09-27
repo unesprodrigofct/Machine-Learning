@@ -31,6 +31,9 @@ jobs:
           version: 1.8.3
           virtualenvs-create: false
 
+      - name: Ensure Poetry on PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
       - name: Install dependencies
         working-directory: Machine-Learning
         run: poetry install --with dev

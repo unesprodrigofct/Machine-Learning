@@ -28,6 +28,8 @@ jobs:
         with:
           version: 1.8.3
           virtualenvs-create: false
+      - name: Ensure Poetry on PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Cache Poetry virtualenvs
         id: cache-poetry
         uses: actions/cache@v4
@@ -53,6 +55,8 @@ jobs:
         with:
           version: 1.8.3
           virtualenvs-create: false
+      - name: Ensure Poetry on PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Restore Poetry cache
         uses: actions/cache@v4
         with:
@@ -91,6 +95,8 @@ jobs:
         with:
           version: 1.8.3
           virtualenvs-create: false
+      - name: Ensure Poetry on PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Restore Poetry cache
         uses: actions/cache@v4
         with:
