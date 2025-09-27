@@ -4,13 +4,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, Optional
-
 import joblib
+from sklearn.base import BaseEstimator
 import structlog
 
 logger = structlog.get_logger(__name__)
-
 
 @dataclass
 class ModelMetadata:
@@ -19,16 +17,16 @@ class ModelMetadata:
     name: str
     version: str = "1.0.0"
     artifact_path: Path = field(default_factory=lambda: Path("artifacts"))
-    extra: Dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, Any] = field(default_factory=dict)
 
 
 class PersistableModel:
     """Mixin adding persistence helpers for scikit-learn compatible models."""
 
-    def __init__(self, metadata: Optional[ModelMetadata] = None) -> None:
+    def __init__(self, metadata: ModelMetadata | None = None) -> None:
         self.metadata = metadata or ModelMetadata(name=self.__class__.__name__)
 
-    def save(self, model: Any) -> Path:
+    def save(self, model: BaseEstimator) -> Path:
         """Persist the provided model instance to disk."""
 
         self.metadata.artifact_path.mkdir(parents=True, exist_ok=True)
@@ -38,7 +36,7 @@ class PersistableModel:
         return output_path
 
     @staticmethod
-    def load(path: Path) -> Any:
+    def load(path: Path) -> BaseEstimator:
         """Load a persisted model artifact."""
 
         logger.info("model.loaded", path=str(path))

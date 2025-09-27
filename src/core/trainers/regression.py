@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional, Tuple
 
 import pandas as pd
 from sklearn import datasets, linear_model
@@ -16,24 +15,24 @@ from src.core.base import ModelMetadata, PersistableModel
 @dataclass
 class RegressionConfig:
     test_size: float = 0.3
-    random_state: Optional[int] = None
+    random_state: int | None = None
 
 
 class LinearRegressionTrainer(PersistableModel):
     """Encapsulated workflow for linear regression training and evaluation."""
 
-    def __init__(self, config: RegressionConfig, metadata: Optional[ModelMetadata] = None) -> None:
+    def __init__(self, config: RegressionConfig, metadata: ModelMetadata | None = None) -> None:
         super().__init__(metadata)
         self.config = config
         self.model = linear_model.LinearRegression()
 
-    def load_data(self) -> Tuple[pd.DataFrame, pd.Series]:
+    def load_data(self) -> tuple[pd.DataFrame, pd.Series]:
         dataset = datasets.load_diabetes()
         X = pd.DataFrame(dataset.data, columns=dataset.feature_names)
         y = pd.Series(dataset.target, name="target")
         return X, y
 
-    def train(self) -> Tuple[float, float]:
+    def train(self) -> tuple[float, float]:
         X, y = self.load_data()
         X_train, X_test, y_train, y_test = train_test_split(
             X,

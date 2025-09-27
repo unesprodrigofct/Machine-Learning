@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, List, Optional
 
 import pandas as pd
 from sqlalchemy import create_engine, text
@@ -17,7 +17,7 @@ class CSVLoaderConfig:
     path: Path
     sep: str = ","
     encoding: str = "utf-8"
-    usecols: Optional[Iterable[str]] = None
+    usecols: Iterable[str] | None = None
 
 
 def load_csv_dataset(config: CSVLoaderConfig) -> pd.DataFrame:
@@ -50,14 +50,14 @@ def load_sql_dataset(config: SQLLoaderConfig) -> pd.DataFrame:
     return df
 
 
-def load_text_corpus(path: Path, encoding: str = "utf-8") -> List[str]:
+def load_text_corpus(path: Path, encoding: str = "utf-8") -> list[str]:
     """Load a text corpus where each line is treated as a separate document."""
 
     content = path.read_text(encoding=encoding)
     return [line.strip() for line in content.splitlines() if line.strip()]
 
 
-def load_titanic_for_xgboost(cache_dir: Optional[Path] = None) -> pd.DataFrame:
+def load_titanic_for_xgboost(cache_dir: Path | None = None) -> pd.DataFrame:
     """Download and preprocess the Titanic dataset for XGBoost training."""
 
     url = "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv"

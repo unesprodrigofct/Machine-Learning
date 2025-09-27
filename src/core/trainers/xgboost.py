@@ -4,10 +4,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 import joblib
-import numpy as np
 import pandas as pd
 import xgboost as xgb
 from scipy.stats import ks_2samp
@@ -23,14 +22,14 @@ class XGBoostConfig:
 
     test_size: float = 0.3
     random_state: int = 1337
-    params_grid: Optional[Dict[str, Any]] = None
+    params_grid: dict[str, Any] | None = None
     cv_splits: int = 5
 
 
 class XGBoostTrainer(PersistableModel):
     """Encapsulates an XGBoost training workflow with grid search."""
 
-    def __init__(self, config: XGBoostConfig, metadata: Optional[ModelMetadata] = None) -> None:
+    def __init__(self, config: XGBoostConfig, metadata: ModelMetadata | None = None) -> None:
         super().__init__(metadata)
         self.config = config
         self.model = xgb.XGBClassifier()
@@ -41,7 +40,7 @@ class XGBoostTrainer(PersistableModel):
             raise ValueError(f"Target column '{target_column}' not present in dataset")
         return dataset
 
-    def train(self, dataset: pd.DataFrame, target_column: str) -> Tuple[float, float]:
+    def train(self, dataset: pd.DataFrame, target_column: str) -> tuple[float, float]:
         X = dataset.drop(columns=[target_column])
         y = dataset[target_column]
 

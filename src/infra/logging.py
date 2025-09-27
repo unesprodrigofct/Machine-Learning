@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict
+from typing import Any
 
 import structlog
 
@@ -28,7 +28,7 @@ def configure_logging(level: int = logging.INFO) -> None:
     )
 
 
-def get_logger(name: str, **context: Dict[str, Any]) -> structlog.stdlib.BoundLogger:
+def get_logger(name: str, **context: dict[str, Any]) -> structlog.stdlib.BoundLogger:
     """Return a bound structlog logger with optional context."""
 
     logger = structlog.get_logger(name)

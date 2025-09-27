@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Iterable, List, Optional
 
 import numpy as np
 from sklearn.cluster import KMeans
@@ -18,13 +18,13 @@ class TextClusteringConfig:
     n_clusters: int = 5
     max_features: int = 5_000
     ngram_range: tuple[int, int] = (1, 2)
-    random_state: Optional[int] = 42
+    random_state: int | None = 42
 
 
 class TextClusteringPipeline:
     """Pipeline that transforms raw documents and fits a clustering model."""
 
-    def __init__(self, config: Optional[TextClusteringConfig] = None) -> None:
+    def __init__(self, config: TextClusteringConfig | None = None) -> None:
         self.config = config or TextClusteringConfig()
         self.vectorizer = TfidfVectorizer(
             max_features=self.config.max_features,
@@ -56,7 +56,7 @@ class TextClusteringPipeline:
         matrix = self.vectorizer.transform(documents)
         return silhouette_score(matrix, self.model.predict(matrix))
 
-    def top_terms_per_cluster(self, top_n: int = 5) -> List[List[str]]:
+    def top_terms_per_cluster(self, top_n: int = 5) -> list[list[str]]:
         if not self._fitted:
             raise RuntimeError("Pipeline must be fitted before extracting top terms.")
         feature_names = np.array(self.vectorizer.get_feature_names_out())

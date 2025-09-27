@@ -2,5 +2,4 @@
 
 from src.core.base import ModelMetadata, PersistableModel
 
-
 __all__ = ["ModelMetadata", "PersistableModel"]

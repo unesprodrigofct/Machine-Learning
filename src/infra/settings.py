@@ -16,7 +16,11 @@ class AppSettings(BaseSettings):
     text_corpus_path: Path = Path("data/text_corpus.txt")
     mlflow_tracking_uri: str | None = None
 
-    model_config = SettingsConfigDict(env_prefix="ML_", env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(
+        env_prefix="ML_",
+        env_file=".env",
+        env_file_encoding="utf-8"
+    )
 
 
 @lru_cache
