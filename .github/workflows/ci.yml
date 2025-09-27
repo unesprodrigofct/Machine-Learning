@@ -36,20 +36,20 @@ jobs:
 
       - name: Install dependencies
         working-directory: Machine-Learning
-        run: poetry install --with dev
+        run: $HOME/.local/bin/poetry install --with dev
 
       - name: Run black
         working-directory: Machine-Learning
-        run: poetry run black --check src tests
+        run: $HOME/.local/bin/poetry run black --check src tests
 
       - name: Run ruff
         working-directory: Machine-Learning
-        run: poetry run ruff check src tests
+        run: $HOME/.local/bin/poetry run ruff check src tests
 
       - name: Run mypy
         working-directory: Machine-Learning
-        run: poetry run mypy --strict src
+        run: $HOME/.local/bin/poetry run mypy --strict src
 
       - name: Run pytest
         working-directory: Machine-Learning
-        run: poetry run pytest --cov=src --cov-report=term-missing
+        run: $HOME/.local/bin/poetry run pytest --cov=src --cov-report=term-missing

@@ -38,7 +38,7 @@ jobs:
           key: poetry-${{ runner.os }}-${{ hashFiles('Machine-Learning/poetry.lock') }}
       - name: Install dependencies
         working-directory: Machine-Learning
-        run: poetry install --with dev
+        run: $HOME/.local/bin/poetry install --with dev
 
   lint-and-type:
     runs-on: ubuntu-latest
@@ -64,21 +64,21 @@ jobs:
           key: poetry-${{ runner.os }}-${{ hashFiles('Machine-Learning/poetry.lock') }}
       - name: Install dependencies
         working-directory: Machine-Learning
-        run: poetry install --with dev
+        run: $HOME/.local/bin/poetry install --with dev
       - name: Run linters
         working-directory: Machine-Learning
         run: |
-          poetry run black --check src tests
-          poetry run isort --check-only src tests
-          poetry run ruff check src tests
+          $HOME/.local/bin/poetry run black --check src tests
+          $HOME/.local/bin/poetry run isort --check-only src tests
+          $HOME/.local/bin/poetry run ruff check src tests
       - name: Type checking
         working-directory: Machine-Learning
-        run: poetry run mypy --strict src
+        run: $HOME/.local/bin/poetry run mypy --strict src
       - name: Security scanning
         working-directory: Machine-Learning
         run: |
-          poetry run bandit -r src -c pyproject.toml
-          poetry run safety check --full-report
+          $HOME/.local/bin/poetry run bandit -r src -c pyproject.toml
+          $HOME/.local/bin/poetry run safety check --full-report
 
   tests:
     runs-on: ubuntu-latest
@@ -104,10 +104,10 @@ jobs:
           key: poetry-${{ runner.os }}-${{ hashFiles('Machine-Learning/poetry.lock') }}
       - name: Install dependencies
         working-directory: Machine-Learning
-        run: poetry install --with dev
+        run: $HOME/.local/bin/poetry install --with dev
       - name: Run pytest
         working-directory: Machine-Learning
-        run: poetry run pytest --cov=src --cov-report=xml --cov-report=term-missing
+        run: $HOME/.local/bin/poetry run pytest --cov=src --cov-report=xml --cov-report=term-missing
       - name: Upload coverage to build artifacts
         uses: actions/upload-artifact@v4
         with:
